@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Eclipse
+Bundle-SymbolicName: InvMon.eclipse
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: InvMon.eclipse
+Bundle-RequiredExecutionEnvironment: JavaSE-17
