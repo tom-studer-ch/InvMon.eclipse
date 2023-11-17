@@ -1,3 +1,12 @@
+/*********************************************************************
+* Copyright (c) 2023-11-23 Tom Studer @ nCubate Software GmbH
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package invmon_eclipse;
 
 import java.lang.reflect.Field;
@@ -15,20 +24,20 @@ import org.eclipse.swt.widgets.ToolItem;
 /**
  * Currently not used. Can be deleted.
  */
-public class A2pbToolBarManager extends ToolBarManager {
+public class InvMonToolBarManager extends ToolBarManager {
 
 	private int itemStyle;
 	
 	
-	public A2pbToolBarManager() {
+	public InvMonToolBarManager() {
 	}
 
-	public A2pbToolBarManager(int style) {
+	public InvMonToolBarManager(int style) {
 		super(style);
 		this.itemStyle = style;
 	}
 
-	public A2pbToolBarManager(ToolBar toolbar) {
+	public InvMonToolBarManager(ToolBar toolbar) {
 		super(toolbar);
 		this.itemStyle = toolbar.getStyle();
 	}
@@ -42,7 +51,7 @@ public class A2pbToolBarManager extends ToolBarManager {
 	@Override
 	public ToolBar createControl(Composite parent) {
 		if (!toolBarExist() && parent != null) {
-			ToolBar toolBar = new A2pbToolBar(parent, itemStyle);
+			ToolBar toolBar = new InvMonToolBar(parent, itemStyle);
 			toolBar.setMenu(getContextMenuControl());
 			update(true);
 

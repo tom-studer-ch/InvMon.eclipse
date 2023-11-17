@@ -1,3 +1,12 @@
+/*********************************************************************
+* Copyright (c) 2023-11-23 Tom Studer @ nCubate Software GmbH
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package invmon_eclipse;
 
 import org.eclipse.e4.ui.model.application.MApplicationElement;
@@ -15,9 +24,9 @@ import org.eclipse.swt.widgets.ToolBar;
  * Currently not used. Can be deleted.
  */
 @SuppressWarnings("restriction")
-public class A2pbToolBarManagerRenderer extends ToolBarManagerRenderer {
+public class InvMonToolBarManagerRenderer extends ToolBarManagerRenderer {
 
-	public A2pbToolBarManagerRenderer() {
+	public InvMonToolBarManagerRenderer() {
 	}
 
 	/**
@@ -29,7 +38,7 @@ public class A2pbToolBarManagerRenderer extends ToolBarManagerRenderer {
 		int style = orientation | SWT.WRAP | SWT.FLAT | SWT.RIGHT;
 		ToolBarManager manager = super.getManager(model);
 		if (manager == null) {
-			manager = new A2pbToolBarManager(style);
+			manager = new InvMonToolBarManager(style);
 			IContributionManagerOverrides overrides = null;
 			MApplicationElement parentElement = model.getParent();
 			if (parentElement == null) {

@@ -1,3 +1,12 @@
+/*********************************************************************
+* Copyright (c) 2023-11-23 Tom Studer @ nCubate Software GmbH
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package invmon_eclipse;
 
 import java.util.ArrayList;
@@ -28,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
 @SuppressWarnings("restriction")
-public class A2pbBasicPartList extends AbstractTableInformationControl {
+public class InvMonBasicPartList extends AbstractTableInformationControl {
 
 	private class BasicStackListLabelProvider extends ColumnLabelProvider {
 
@@ -89,13 +98,13 @@ public class A2pbBasicPartList extends AbstractTableInformationControl {
 
 	private EPartService partService;
 
-	private A2pbStackRenderer renderer;
+	private InvMonStackRenderer renderer;
 
 	// private ISaveHandler saveHandler;
 
-	public A2pbBasicPartList(Shell parent, int shellStyle, int treeStyler,
+	public InvMonBasicPartList(Shell parent, int shellStyle, int treeStyler,
 			EPartService partService, MElementContainer<?> input,
-			A2pbStackRenderer renderer, boolean mru) {
+			InvMonStackRenderer renderer, boolean mru) {
 		super(parent, shellStyle, treeStyler);
 		this.partService = partService;
 		this.input = input;
@@ -107,7 +116,7 @@ public class A2pbBasicPartList extends AbstractTableInformationControl {
 				public int category(Object element) {
 					if (element instanceof MPart) {
 						MPart part = (MPart) element;
-						CTabItem item = A2pbBasicPartList.this.renderer.findItemForPart(part);
+						CTabItem item = InvMonBasicPartList.this.renderer.findItemForPart(part);
 						if (item != null && !item.isShowing()) {
 							return -1;
 						}

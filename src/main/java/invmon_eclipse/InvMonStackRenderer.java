@@ -1,3 +1,12 @@
+/*********************************************************************
+* Copyright (c) 2023-11-23 Tom Studer @ nCubate Software GmbH
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package invmon_eclipse;
 
 import static java.util.Collections.singletonList;
@@ -97,7 +106,7 @@ import org.osgi.service.event.EventHandler;
  *
  */
 @SuppressWarnings({ "restriction" })
-public class A2pbStackRenderer extends LazyStackRenderer {
+public class InvMonStackRenderer extends LazyStackRenderer {
 	/**
 	 *
 	 */
@@ -283,7 +292,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 		Object newValue = event.getProperty(UIEvents.EventTags.NEW_VALUE);
 
 		// is this a direct child of the stack?
-		if (part.getParent() != null && part.getParent().getRenderer() == A2pbStackRenderer.this) {
+		if (part.getParent() != null && part.getParent().getRenderer() == InvMonStackRenderer.this) {
 			CTabItem cti = findItemForPart(part);
 			if (cti != null) {
 				updateTab(cti, part, attName, newValue);
@@ -302,7 +311,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 
 				MElementContainer<MUIElement> refParent = ref.getParent();
 				// can be null, see bug 328296
-				if (refParent != null && refParent.getRenderer() instanceof A2pbStackRenderer) {
+				if (refParent != null && refParent.getRenderer() instanceof InvMonStackRenderer) {
 					CTabItem cti = findItemForPart(ref, refParent);
 					if (cti != null) {
 						updateTab(cti, part, attName, newValue);
@@ -366,7 +375,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 
 		// Is the part directly under the stack?
 		MElementContainer<MUIElement> parent = part.getParent();
-		if (parent != null && parent.getRenderer() == A2pbStackRenderer.this) {
+		if (parent != null && parent.getRenderer() == InvMonStackRenderer.this) {
 			CTabItem cti = findItemForPart(part, parent);
 			if (cti != null) {
 				updateTab(cti, part, attName, newValue);
@@ -380,7 +389,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 		if (refs != null) {
 			for (MPlaceholder ref : refs) {
 				MElementContainer<MUIElement> refParent = ref.getParent();
-				if (refParent.getRenderer() instanceof A2pbStackRenderer) {
+				if (refParent.getRenderer() instanceof InvMonStackRenderer) {
 					CTabItem cti = findItemForPart(ref, refParent);
 					if (cti != null) {
 						updateTab(cti, part, attName, newValue);
@@ -863,7 +872,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 			return null;
 
 		// is this a direct child of the stack?
-		if (part.getParent() != null && part.getParent().getRenderer() == A2pbStackRenderer.this) {
+		if (part.getParent() != null && part.getParent().getRenderer() == InvMonStackRenderer.this) {
 			CTabItem cti = findItemForPart(part, part.getParent());
 			if (cti != null) {
 				return cti;
@@ -885,7 +894,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 
 				MElementContainer<MUIElement> refParent = ref.getParent();
 				// can be null, see bug 328296
-				if (refParent != null && refParent.getRenderer() instanceof A2pbStackRenderer) {
+				if (refParent != null && refParent.getRenderer() instanceof InvMonStackRenderer) {
 					CTabItem cti = findItemForPart(ref, refParent);
 					if (cti != null) {
 						return cti;
@@ -1115,7 +1124,7 @@ public class A2pbStackRenderer extends LazyStackRenderer {
 	 */
 	public void showAvailableItems(MElementContainer<?> stack, CTabFolder tabFolder, boolean forceCenter) {
 		IEclipseContext ctxt = getContext(stack);
-		final A2pbBasicPartList editorList = new A2pbBasicPartList(tabFolder.getShell(), SWT.ON_TOP, SWT.V_SCROLL | SWT.H_SCROLL, ctxt.get(EPartService.class), stack, this,
+		final InvMonBasicPartList editorList = new InvMonBasicPartList(tabFolder.getShell(), SWT.ON_TOP, SWT.V_SCROLL | SWT.H_SCROLL, ctxt.get(EPartService.class), stack, this,
 				getMRUValueFromPreferences());
 		editorList.setInput();
 

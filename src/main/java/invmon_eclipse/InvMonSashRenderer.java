@@ -1,3 +1,12 @@
+/*********************************************************************
+* Copyright (c) 2023-11-23 Tom Studer @ nCubate Software GmbH
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package invmon_eclipse;
 
 import javax.inject.Inject;
@@ -19,7 +28,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.osgi.service.event.Event;
 
 @SuppressWarnings("restriction")
-public class A2pbSashRenderer extends SashRenderer {
+public class InvMonSashRenderer extends SashRenderer {
 
 	private static final int DEFAULT_WEIGHT = 5000;
 
@@ -31,7 +40,7 @@ public class A2pbSashRenderer extends SashRenderer {
 	private void subscribeTopicOrientationChanged(@UIEventTopic(UIEvents.GenericTile.TOPIC_HORIZONTAL) Event event) {
 		// Ensure that this event is for a MPartSashContainer
 		MUIElement element = (MUIElement) event.getProperty(UIEvents.EventTags.ELEMENT);
-		if (element.getRenderer() != A2pbSashRenderer.this) {
+		if (element.getRenderer() != InvMonSashRenderer.this) {
 			return;
 		}
 		forceLayout((MElementContainer<MUIElement>) element);
@@ -43,7 +52,7 @@ public class A2pbSashRenderer extends SashRenderer {
 		// Ensure that this event is for a child of a MPartSashContainer
 		MUIElement element = (MUIElement) event.getProperty(UIEvents.EventTags.ELEMENT);
 		MElementContainer<MUIElement> parent = element.getParent();
-		if (parent.getRenderer() != A2pbSashRenderer.this) {
+		if (parent.getRenderer() != InvMonSashRenderer.this) {
 			return;
 		}
 		forceLayout(parent);
@@ -118,7 +127,7 @@ public class A2pbSashRenderer extends SashRenderer {
 		
 		// ### modification start
 		
-		sashComposite.setLayout(new A2pbSashLayout(sashComposite, element));
+		sashComposite.setLayout(new InvMonSashLayout(sashComposite, element));
 
 		// ### modification end
 

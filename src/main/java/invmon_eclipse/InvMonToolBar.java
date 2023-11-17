@@ -7,10 +7,23 @@
 *
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
+package invmon_eclipse;
+
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ToolBar;
 
 /**
- * This package contains some customizations of Eclipse classes to add some layout options to Sash Layout, the StackRenderer, ...<p>
- * 
- * Look for comments marked '###'
+ * Currently not used. Can be deleted.
  */
-package invmon_eclipse;
+public class InvMonToolBar extends ToolBar {
+
+	public InvMonToolBar(Composite parent, int style) {
+		super(parent, style);
+	}
+	
+	@Override
+	protected void checkSubclass () {
+	}
+
+}
+

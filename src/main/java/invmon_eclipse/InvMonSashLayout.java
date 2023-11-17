@@ -1,3 +1,12 @@
+/*********************************************************************
+* Copyright (c) 2023-11-23 Tom Studer @ nCubate Software GmbH
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package invmon_eclipse;
 
 import java.util.ArrayList;
@@ -19,7 +28,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class A2pbSashLayout extends Layout {
+public class InvMonSashLayout extends Layout {
 
 
 	// The minimum value (as a percentage) that a sash can be dragged to
@@ -63,7 +72,7 @@ public class A2pbSashLayout extends Layout {
 	 */
 	int lastCursor = 0;
 
-	public A2pbSashLayout(final Composite host, MUIElement root) {
+	public InvMonSashLayout(final Composite host, MUIElement root) {
 		this.root = root;
 		this.host = host;
 

@@ -8,9 +8,6 @@
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
 
-/**
- * This package contains some customizations of Eclipse classes to add some layout options to Sash Layout, the StackRenderer, ...<p>
- * 
- * Look for comments marked '###'
- */
-package invmon_eclipse;
+This project contains custom changes to Eclipse files made for the InvMon product.
+All changes/extensions made to Eclipse code in the context of InvMon are provided
+here under the Eclipse Public License 2.0.
