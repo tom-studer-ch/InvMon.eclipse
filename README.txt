@@ -11,3 +11,6 @@
 This project contains custom changes to Eclipse files made for the InvMon product.
 All changes/extensions made to Eclipse code in the context of InvMon are provided
 here under the Eclipse Public License 2.0.
+
+The code here contains patches to the Nebula CDateTime widget. The Nebula base version 
+used is V3.1.0.

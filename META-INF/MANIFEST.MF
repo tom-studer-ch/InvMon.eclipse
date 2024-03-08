@@ -3,7 +3,15 @@ Bundle-ManifestVersion: 2
 Bundle-Name: InvMon.eclipse
 Bundle-SymbolicName: InvMon.eclipse
 Bundle-Version: 1.0.0.qualifier
-Export-Package: invmon_eclipse
+Export-Package: invmon_eclipse,
+ org.eclipse.nebula.cwt.animation,
+ org.eclipse.nebula.cwt.animation.effects,
+ org.eclipse.nebula.cwt.animation.movement,
+ org.eclipse.nebula.cwt.base,
+ org.eclipse.nebula.cwt.svg,
+ org.eclipse.nebula.cwt.v,
+ org.eclipse.nebula.widgets.cdatetime,
+ org.eclipse.nebula.widgets.formattedtext
 Automatic-Module-Name: InvMon.eclipse
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.e4.ui.workbench.renderers.swt,
