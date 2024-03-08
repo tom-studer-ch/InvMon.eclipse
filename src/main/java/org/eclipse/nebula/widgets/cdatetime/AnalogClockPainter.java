@@ -184,6 +184,7 @@ class AnalogClockPainter implements IControlPainter {
 
 		e.gc.setLineWidth(lwidth);
 		e.gc.setLineCap(lcap);
+		o.dispose();
 	}
 
 	protected void paintFace(VPanel panel, Event e) {
@@ -257,6 +258,7 @@ class AnalogClockPainter implements IControlPainter {
 			tmpcal.add(Calendar.HOUR_OF_DAY, picker.is24Hour ? 2 : 1);
 		}
 
+		o.dispose();
 		p.dispose();
 		c1.dispose();
 		c2.dispose();
