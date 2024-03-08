@@ -41,7 +41,7 @@ class AnalogClockPainter implements IControlPainter {
 	private CDateTime cdt;
 	private AnalogTimePicker picker;
 	private boolean paintMinorTicks = true;
-	private boolean paintShadows = true;
+	private boolean paintShadows = false;
 
 	public AnalogClockPainter(CDateTime cdt, AnalogTimePicker picker) {
 		this.cdt = cdt;

@@ -355,7 +355,7 @@ class AnalogTimePicker extends VPanel {
 			} else if (field == Calendar.MINUTE) {
 				minHand = true;
 			} else if (field == Calendar.SECOND) {
-				secHand = true;
+				// secHand = true;							secHand never (overkill for most uses)
 			} else if (field == Calendar.AM_PM) {
 				am_pm = true;
 			}
