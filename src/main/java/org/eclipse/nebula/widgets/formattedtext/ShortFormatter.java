@@ -100,7 +100,7 @@ public class ShortFormatter extends NumberFormatter {
 		if (value instanceof Short) {
 			return value;
 		} else if (value instanceof Number) {
-			return new Short(((Number) value).shortValue());
+			return Short.valueOf(((Number) value).shortValue());
 		} else {
 			return null;
 		}

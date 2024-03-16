@@ -519,7 +519,7 @@ class DatePicker extends VPanel {
                         tmpcal.set(Calendar.MONTH, i);
                         monthItems[i] = new MenuItem(monthMenu, SWT.NONE);
                         monthItems[i].setData("Month", //$NON-NLS-1$
-                                new Integer(tmpcal.get(Calendar.MONTH)));
+                                Integer.valueOf(tmpcal.get(Calendar.MONTH)));
                         monthItems[i]
                                 .addSelectionListener(new SelectionAdapter() {
                                     @Override
@@ -624,7 +624,7 @@ class DatePicker extends VPanel {
                     yearItems = new MenuItem[11];
                     for (int i = 0; i < 11; i++) {
                         yearItems[i] = new MenuItem(yearMenu, SWT.NONE);
-                        yearItems[i].setData("Year", new Integer(i)); //$NON-NLS-1$
+                        yearItems[i].setData("Year", Integer.valueOf(i)); //$NON-NLS-1$
                         yearItems[i]
                                 .addSelectionListener(new SelectionAdapter() {
                                     @Override
@@ -1345,7 +1345,7 @@ class DatePicker extends VPanel {
                     monthItems[i].setText(
                             getFormattedDate("MMMM", tmpcal.getTime())); //$NON-NLS-1$
                     monthItems[i].setData("Month", //$NON-NLS-1$
-                            new Integer(tmpcal.get(Calendar.MONTH)));
+                            Integer.valueOf(tmpcal.get(Calendar.MONTH)));
                     if (selected.get(Calendar.MONDAY) == tmpcal
                             .get(Calendar.MONTH)) {
                         monthItems[i].setImage(Resources.getIconBullet());
@@ -1453,7 +1453,7 @@ class DatePicker extends VPanel {
                 monthButtons[i]
                         .setText(getFormattedDate("MMM", tmpcal.getTime())); //$NON-NLS-1$
                 monthButtons[i].setData("Month", //$NON-NLS-1$
-                        new Integer(tmpcal.get(Calendar.MONTH)));
+                        Integer.valueOf(tmpcal.get(Calendar.MONTH)));
             }
         }
     }

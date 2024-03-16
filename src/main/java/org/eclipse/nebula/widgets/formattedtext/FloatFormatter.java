@@ -47,7 +47,7 @@ public class FloatFormatter extends NumberFormatter {
 	public Object getValue() {
 		Object value = super.getValue();
 		if ( value instanceof Number ) {
-			return new Float(((Number) value).floatValue());
+			return Float.valueOf(((Number) value).floatValue());
 		}
 		return super.getValue();
 	}

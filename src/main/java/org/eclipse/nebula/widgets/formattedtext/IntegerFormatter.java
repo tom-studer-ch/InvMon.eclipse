@@ -47,7 +47,7 @@ public class IntegerFormatter extends NumberFormatter {
 	public Object getValue() {
 		Object value = super.getValue();
 		if ( value instanceof Number ) {
-			return new Integer(((Number) value).intValue());
+			return Integer.valueOf(((Number) value).intValue());
 		}
 		return super.getValue();
 	}

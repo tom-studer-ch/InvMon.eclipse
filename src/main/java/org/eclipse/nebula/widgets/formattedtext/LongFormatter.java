@@ -47,7 +47,7 @@ public class LongFormatter extends NumberFormatter {
 	public Object getValue() {
 		Object value = super.getValue();
 		if ( value instanceof Number ) {
-			return new Long(((Number) value).longValue());
+			return Long.valueOf(((Number) value).longValue());
 		}
 		return super.getValue();
 	}

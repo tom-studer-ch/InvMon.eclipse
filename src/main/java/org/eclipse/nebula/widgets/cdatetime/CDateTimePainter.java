@@ -54,6 +54,8 @@ public class CDateTimePainter implements IControlPainter {
 		case Panel:
 			panelPainter.paintBackground(control, e);
 			break;
+		default:
+			// noop
 		}
 	}
 
@@ -68,6 +70,8 @@ public class CDateTimePainter implements IControlPainter {
 		case Panel:
 			panelPainter.paintBorders(control, e);
 			break;
+		default:
+			// noop
 		}
 	}
 
@@ -82,6 +86,8 @@ public class CDateTimePainter implements IControlPainter {
 		case Panel:
 			panelPainter.paintContent(control, e);
 			break;
+		default:
+			// noop
 		}
 	}
 
@@ -550,6 +556,8 @@ public class CDateTimePainter implements IControlPainter {
 		case YearPrev:
 			updateYearPrev(control);
 			break;
+		default:
+			// noop
 		}
 	}
 

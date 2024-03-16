@@ -452,6 +452,7 @@ public abstract class VControl {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T getData(String name, Class<T> clazz) {
 		if (dataMap != null) {
 			return (T) dataMap.get(name);

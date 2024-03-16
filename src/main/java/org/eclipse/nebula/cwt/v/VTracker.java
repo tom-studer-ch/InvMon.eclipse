@@ -84,6 +84,7 @@ public class VTracker implements DisposeListener {
 		return instance().activeControl;
 	}
 
+	@SuppressWarnings("unused")
 	private static boolean setFocusFromPrev(Control control) {
 		Control c = null;
 		Composite parent = control.getParent();
@@ -108,6 +109,7 @@ public class VTracker implements DisposeListener {
 		return false;
 	}
 	
+	@SuppressWarnings("unused")
 	private static boolean setFocusFromNext(Control control) {
 		Control c = null;
 		Composite parent = control.getParent();
@@ -198,10 +200,9 @@ public class VTracker implements DisposeListener {
 		}
 	}
 
-	private static Boolean lock = new Boolean(true);
 	static VTracker instance() {
 		if(tracker == null) {
-			synchronized (lock) {
+			synchronized (VTracker.class) {
 				if(tracker == null) {
 					tracker = new VTracker();
 				}

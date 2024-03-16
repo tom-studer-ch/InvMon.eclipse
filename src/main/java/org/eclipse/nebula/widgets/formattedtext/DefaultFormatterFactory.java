@@ -74,7 +74,8 @@ public abstract class DefaultFormatterFactory {
    * @param c Class for which to create a formatter
    * @return New formatter corresponding to the class, or null if the class is unknown.
    */
-  public static ITextFormatter createFormatter(Class<? extends Object> c) {
+  @SuppressWarnings("deprecation")
+public static ITextFormatter createFormatter(Class<? extends Object> c) {
   	ITextFormatter f = null;
     Class<?> fc = formatters.get(c);
     if ( fc == null ) {

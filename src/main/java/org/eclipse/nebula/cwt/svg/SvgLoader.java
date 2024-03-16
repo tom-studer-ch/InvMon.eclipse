@@ -201,7 +201,7 @@ class SvgLoader {
 		if(relative) {
 			points.add(points.get(points.size() - relativeOffset) + Float.parseFloat(s));
 		} else {
-			points.add(new Float(s));
+			points.add(Float.valueOf(s));
 		}
 	}
 	
@@ -792,7 +792,7 @@ class SvgLoader {
 		if(s == null) {
 			return defaultValue;
 		} else {
-			return new Float(s);
+			return Float.valueOf(s);
 		}
 	}
 
@@ -1159,9 +1159,9 @@ class SvgLoader {
 			}
 			if(clamp) {
 				if(offset > 1) {
-					offset = new Float(1);
+					offset = Float.valueOf(1);
 				} else if(offset < 0) {
-					offset = new Float(0);
+					offset = Float.valueOf(0);
 				}
 			}
 			return offset;
@@ -1339,9 +1339,9 @@ class SvgLoader {
 	private static Float parseStrokeWidth(String s) {
 		if(s != null) {
 			if(s.endsWith("px")) { //$NON-NLS-1$
-				return new Float(s.substring(0, s.length() - 2));
+				return Float.valueOf(s.substring(0, s.length() - 2));
 			} else {
-				return new Float(s);
+				return Float.valueOf(s);
 			}
 		}
 		return null;

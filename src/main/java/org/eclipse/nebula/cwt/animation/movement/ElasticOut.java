@@ -48,8 +48,8 @@ public class ElasticOut extends AbstractMovement {
 
 	public ElasticOut(double a, double p) {
 		super();
-		this.a = new Double(a);
-		this.p = new Double(p);
+		this.a = Double.valueOf(a);
+		this.p = Double.valueOf(p);
 	}
 
 	public ElasticOut() {
@@ -69,10 +69,10 @@ public class ElasticOut extends AbstractMovement {
 			return min + c;
 
 		if (p == null)
-			p = new Double(duration * .3);
+			p = Double.valueOf(duration * .3);
 
 		if (a == null || a.doubleValue() < Math.abs(c)) {
-			a = new Double(c);
+			a = Double.valueOf(c);
 			s = p.doubleValue() / 4d;
 		}
 

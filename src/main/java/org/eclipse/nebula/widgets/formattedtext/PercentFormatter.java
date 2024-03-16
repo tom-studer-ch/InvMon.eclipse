@@ -102,7 +102,7 @@ public class PercentFormatter extends NumberFormatter {
 	public Object getValue() {
 		Number val = (Number) super.getValue();
 		if ( val != null ) {
-			val = new Double(((Number) val).doubleValue() / 100);
+			val = Double.valueOf(((Number) val).doubleValue() / 100);
 		}
 		return val;
 	}
@@ -137,7 +137,7 @@ public class PercentFormatter extends NumberFormatter {
 			if ( ! (value instanceof Number) ) {
 				SWT.error(SWT.ERROR_INVALID_ARGUMENT, null, "Value must be a Number"); //$NON-NLS-1$
 			}
-			super.setValue(new Double(((Number) value).doubleValue() * 100));
+			super.setValue(Double.valueOf(((Number) value).doubleValue() * 100));
 		} else {
 			super.setValue(value);
 		}

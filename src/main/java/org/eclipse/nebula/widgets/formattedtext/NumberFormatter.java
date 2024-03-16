@@ -403,7 +403,7 @@ public class NumberFormatter extends AbstractFormatter {
   							 || editValue.charAt(0) == symbols.getDecimalSeparator()) ) {
 					value = null;
   			} else {
-					value = new Integer(0);
+					value = Integer.valueOf(0);
   			}
   		}
   		modified = false;
@@ -631,7 +631,7 @@ public class NumberFormatter extends AbstractFormatter {
     	clearText(0, editValue.length());
       updateText(editValue.toString(), format(0));
       if ( zeroIntLen + zeroDecimalLen > 0 ) {
-      	this.value = new Integer(0);
+      	this.value = Integer.valueOf(0);
       } else {
       	this.value = null;
       }

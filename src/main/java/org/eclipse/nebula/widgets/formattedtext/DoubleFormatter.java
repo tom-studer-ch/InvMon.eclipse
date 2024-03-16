@@ -47,7 +47,7 @@ public class DoubleFormatter extends NumberFormatter {
 	public Object getValue() {
 		Object value = super.getValue();
 		if ( value instanceof Number ) {
-			return new Double(((Number) value).doubleValue());
+			return Double.valueOf(((Number) value).doubleValue());
 		}
 		return super.getValue();
 	}
