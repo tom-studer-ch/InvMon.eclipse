@@ -281,7 +281,18 @@ public class InvMonSashLayout extends Layout {
 		// Get the total of the weights
 		double totalWeight = totalWeight(sashContainer);
 		int tilePos = sashContainer.isHorizontal() ? bounds.x : bounds.y;
+		
+		// ### modification start (support fixed size parts (provide absolute size via negative weight value)
 
+		for (MUIElement subNode : visibleChildren) {
+			int weight = getWeight(subNode);
+			if (weight < 0) {
+				availableWidth += weight;
+			}			
+		}
+		
+		// ### modification end
+		
 		MUIElement prev = null;
 		for (MUIElement subNode : visibleChildren) {
 			// Add a 'sash' between this node and the 'prev'
@@ -298,21 +309,19 @@ public class InvMonSashLayout extends Layout {
 
 			// Calc the new size as a %'age of the total
 
-			// ### modification start (support one fixed size part at as the first tile (provide absoulte size via negative weight value))
+			// ### modification start (support one fixed size part as the first tile (provide absolute size via negative weight value))
 
-			int newSize = 0;
+			int newSize;
 			int weight = getWeight(subNode);
 			if (weight < 0) {
 				newSize = -weight;
-				availableWidth += weight;
 			} else {
-				double ratio = getWeight(subNode) / totalWeight;
+				double ratio = weight / totalWeight;
 				newSize = (int) ((availableWidth * ratio) + 0.5);
 			}
 
 			// ### modification end
 
-			
 			
 			// ### modification start (support margins)
 
