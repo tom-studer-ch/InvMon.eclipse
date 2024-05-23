@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Widget;
  * or oval).</li>
  * </ul>
  */
-@SuppressWarnings("javadoc")
 public abstract class VControl {
 
 	public enum Type {
