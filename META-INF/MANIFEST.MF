@@ -10,8 +10,10 @@ Export-Package: invmon_eclipse,
  org.eclipse.nebula.cwt.base,
  org.eclipse.nebula.cwt.svg,
  org.eclipse.nebula.cwt.v,
+ org.eclipse.nebula.jface.tablecomboviewer,
  org.eclipse.nebula.widgets.cdatetime,
- org.eclipse.nebula.widgets.formattedtext
+ org.eclipse.nebula.widgets.formattedtext,
+ org.eclipse.nebula.widgets.tablecombo
 Automatic-Module-Name: InvMon.eclipse
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.e4.ui.workbench.renderers.swt,
