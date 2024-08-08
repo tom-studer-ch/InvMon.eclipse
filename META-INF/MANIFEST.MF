@@ -32,4 +32,4 @@ Require-Bundle: org.eclipse.e4.ui.workbench.renderers.swt,
  org.osgi.service.event,
  jakarta.annotation-api,
  org.eclipse.e4.ui.css.core,
- javax.annotation-api;bundle-version="1.3.2"
+ javax.annotation;bundle-version="1.3.5"
