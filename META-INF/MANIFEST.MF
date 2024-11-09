@@ -31,4 +31,5 @@ Require-Bundle: org.eclipse.e4.ui.workbench.renderers.swt,
  org.eclipse.e4.ui.workbench.swt,
  org.eclipse.core.runtime;bundle-version="3.29.0",
  org.osgi.service.event,
- org.eclipse.e4.ui.css.core
+ org.eclipse.e4.ui.css.core,
+ org.eclipse.equinox.launcher;bundle-version="1.6.500"
