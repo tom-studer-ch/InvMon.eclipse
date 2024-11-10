@@ -70,7 +70,7 @@ public class Main {
 		launcherArgs.add("-ws");
 		launcherArgs.add(MAC ? "cocoa" : "win32");
 		launcherArgs.add("-arch");
-		launcherArgs.add(System.getProperty("os.arch"));
+		launcherArgs.add(getArchitecture());
 		launcherArgs.add("-data");
 		launcherArgs.add(concatPaths(invMonDataDir, "view-layout"));
 		launcherArgs.add("-showsplash");
@@ -83,6 +83,14 @@ public class Main {
 		// Launch the equinox launcher
 		System.out.println("Launching equinox launcher");
 		org.eclipse.equinox.launcher.Main.main(launcherArgs.toArray(new String[launcherArgs.size()]));
+	}
+	
+	private static String getArchitecture() {
+		String arch = System.getProperty("os.arch");
+		if ("amd64".equalsIgnoreCase(arch)) {
+			return "x86_64";
+		}
+		return arch;
 	}
 	
 	private static boolean isEmpty(String s) {
