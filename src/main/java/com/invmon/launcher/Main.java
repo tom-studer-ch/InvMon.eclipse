@@ -62,6 +62,11 @@ public class Main {
 		
 		// Assemble args array
 		
+		String splashBaseName = MAC ? "../../img/splash/splash" : "img/splash/splash";
+		String splashScreen = splashBaseName + ".png";
+		String initialSplashScreen = splashBaseName + "-initial.png";
+		if (new File(initialSplashScreen).exists()) splashScreen = initialSplashScreen;
+		
 		ArrayList<String> launcherArgs = new ArrayList<>();
 		launcherArgs.add("-name");
 		launcherArgs.add("InvMon");
@@ -74,7 +79,7 @@ public class Main {
 		launcherArgs.add("-data");
 		launcherArgs.add(concatPaths(invMonDataDir, "view-layout"));
 		launcherArgs.add("-showsplash");
-		launcherArgs.add(MAC ? "../../img/splash/splash.png" : "img/splash/splash.png");
+		launcherArgs.add(splashScreen);
 		launcherArgs.add("-consoleLog");
 
 		// launcherArgs.add("-debug"); // Generates equinox launcher debug output
