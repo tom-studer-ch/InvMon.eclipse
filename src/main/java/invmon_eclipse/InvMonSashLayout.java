@@ -325,10 +325,10 @@ public class InvMonSashLayout extends Layout {
 			
 			// ### modification start (support margins)
 
-			int marginLeft = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-left", "0"));
-			int marginRight = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-right", "0"));
+			int marginLeft = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-left", "5"));
+			int marginRight = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-right", "5"));
 			int marginTop = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-top", "0"));
-			int marginBottom = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-bottom", "0"));
+			int marginBottom = Integer.valueOf(sashContainer.getPersistedState().getOrDefault("margin-bottom", "2"));
 
 			Rectangle subBounds = sashContainer.isHorizontal() ? new Rectangle(
 					tilePos + marginLeft, bounds.y + marginTop, newSize - marginLeft - marginRight, bounds.height - marginTop - marginBottom) : new Rectangle(
