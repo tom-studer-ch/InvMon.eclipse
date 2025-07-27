@@ -84,8 +84,14 @@ public class VButton extends VControl {
 	}
 
 	protected void filterEvent(Event event) {
+		Event e = null;
+		
 		if (hasState(STATE_ACTIVE)) {
 			switch (event.type) {
+			case SWT.MouseDoubleClick:
+				e = createEvent(event);
+				notifyListeners(SWT.MouseDoubleClick, e);
+				break;
 			case SWT.MouseDown:
 				setFocus();
 
@@ -100,7 +106,7 @@ public class VButton extends VControl {
 					armed = true;
 				} else {
 					setState(STATE_SELECTED, !hasState(STATE_SELECTED));
-					Event e = createEvent(event);
+					e = createEvent(event);
 					notifyListeners(SWT.Selection, e);
 					redraw();
 				}
@@ -117,7 +123,7 @@ public class VButton extends VControl {
 					}
 				}
 				if (armed) {
-					Event e = createEvent(event);
+					e = createEvent(event);
 					notifyListeners(SWT.Selection, e);
 				}
 				armed = false;

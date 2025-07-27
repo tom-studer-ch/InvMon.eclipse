@@ -311,24 +311,30 @@ class DatePicker extends VPanel {
                     dayPanel.getMenu().setVisible(true);
                 }
                 break;
+            case SWT.MouseDoubleClick:
+            	System.out.println("double click");
+                if (event.button == 3) {
+                    dayPanel.getMenu().setVisible(true);
+                }
+                break;
             case SWT.MouseWheel:
                 scrollCalendar(event.count > 0 ? SWT.ARROW_UP : SWT.ARROW_DOWN);
                 break;
-            case SWT.Selection:
-                if (event.widget == null) {
-                    VButton button = (VButton) event.data;
-                    int stateMask = event.stateMask;
-                    setSelectionFromButton(button, stateMask);
-                    // Bug 388813
-                    // when the date field is the most "precise"
-                    // information according to the pattern
-                    if (cdt.isClosingField(Calendar.DATE)) {
-                        cdt.fireSelectionChanged(true);
-                    } else {
-                        cdt.fireSelectionChanged();
-                    }
-                }
-                break;
+//            case SWT.Selection:
+//                if (event.widget == null) {
+//                    VButton button = (VButton) event.data;
+//                    int stateMask = event.stateMask;
+//                    setSelectionFromButton(button, stateMask);
+//                    // Bug 388813
+//                    // when the date field is the most "precise"
+//                    // information according to the pattern
+//                    if (cdt.isClosingField(Calendar.DATE)) {
+//                        cdt.fireSelectionChanged(true);
+//                    } else {
+//                        cdt.fireSelectionChanged();
+//                    }
+//                }
+//                break;
             case SWT.Traverse:
                 if (event.detail == SWT.TRAVERSE_RETURN) {
                     setSelectionFromFocusButton(event);
@@ -375,6 +381,7 @@ class DatePicker extends VPanel {
             dayButtons[day].addListener(SWT.MouseWheel, dayListener);
             dayButtons[day].addListener(SWT.Selection, dayListener);
             dayButtons[day].addListener(SWT.Traverse, dayListener);
+            dayButtons[day].addListener(SWT.MouseDoubleClick, dayListener);
 
             colorButtons(dayButtons[day]);
 
