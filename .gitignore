@@ -1,2 +1,4 @@
-/bin/
-/target/
+bin/
+out/
+target/
+.DS_Store
