@@ -76,6 +76,8 @@ public class Main {
 		launcherArgs.add(MAC ? "cocoa" : "win32");
 		launcherArgs.add("-arch");
 		launcherArgs.add(getArchitecture());
+		launcherArgs.add("-configuration");
+		launcherArgs.add(concatPaths(invMonDataDir, ".eclipse"));
 		launcherArgs.add("-data");
 		launcherArgs.add(concatPaths(invMonDataDir, "view-layout"));
 		launcherArgs.add("-showsplash");
