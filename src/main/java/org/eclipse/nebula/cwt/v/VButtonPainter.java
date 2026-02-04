@@ -32,6 +32,9 @@ public class VButtonPainter extends VControlPainter {
 	public void paintBackground(VControl control, Event e) {
 		button = (VButton) control;
 		if (button.hasState(VControl.STATE_ACTIVE | VControl.STATE_SELECTED)) {
+			if (button.bounds.width <= 0 || button.bounds.height <= 0) {
+				return;
+			}
 			if (e.gc.getAlpha() == 255) {
 				doPaintBackground(e.gc, button.bounds, button.getState());
 			} else {

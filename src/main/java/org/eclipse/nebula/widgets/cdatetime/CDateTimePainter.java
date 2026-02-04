@@ -607,22 +607,26 @@ public class CDateTimePainter implements IControlPainter {
 	}
 
 	protected void updateMonthNext(VControl control) {
-		control.setFill(control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		Color fill = cdt.getPickerForegroundColor();
+		control.setFill(fill != null ? fill : control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	protected void updateMonthPrev(VControl control) {
-		control.setFill(control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		Color fill = cdt.getPickerForegroundColor();
+		control.setFill(fill != null ? fill : control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	protected void updateYearLabel(VControl control) {
 	}
 
 	protected void updateYearNext(VControl control) {
-		control.setFill(control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		Color fill = cdt.getPickerForegroundColor();
+		control.setFill(fill != null ? fill : control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	protected void updateYearPrev(VControl control) {
-		control.setFill(control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		Color fill = cdt.getPickerForegroundColor();
+		control.setFill(fill != null ? fill : control.getDisplay().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 }

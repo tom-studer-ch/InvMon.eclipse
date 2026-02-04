@@ -225,6 +225,9 @@ class DatePicker extends VPanel {
             VLabel separator = new VLabel(this, SWT.HORIZONTAL | SWT.SEPARATOR);
             separator.setLayoutData(
                     new GridData(SWT.FILL, SWT.FILL, false, false));
+            if (cdt.pickerForegroundColor != null) {
+                separator.setForeground(cdt.pickerForegroundColor);
+            }
         }
 
         if (cdt.builder.hasBody()) {
@@ -235,6 +238,9 @@ class DatePicker extends VPanel {
                 && cdt.builder.hasFooter()) {
             VLabel sep = new VLabel(this, SWT.HORIZONTAL | SWT.SEPARATOR);
             sep.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+            if (cdt.pickerForegroundColor != null) {
+                sep.setForeground(cdt.pickerForegroundColor);
+            }
         }
 
         if (cdt.builder.hasFooter()) {
@@ -358,6 +364,9 @@ class DatePicker extends VPanel {
 
         VLabel sep = new VLabel(dayPanel, SWT.HORIZONTAL | SWT.SEPARATOR);
         sep.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 7, 1));
+        if (cdt.pickerForegroundColor != null) {
+            sep.setForeground(cdt.pickerForegroundColor);
+        }
 
         dayButtons = new VButton[DAYS_IN_WEEK * NUM_ROWS];
         for (int day = 0; day < dayButtons.length; day++) {
@@ -1530,20 +1539,25 @@ class DatePicker extends VPanel {
         if (cdt.pickerBackgroundColor != null) {
             picker.setBackground(cdt.pickerBackgroundColor);
             if (dayPanel != null) dayPanel.setBackground(cdt.pickerBackgroundColor);
-            if (monthPanel != null) dayPanel.setBackground(cdt.pickerBackgroundColor);
-            if (yearPanel != null) dayPanel.setBackground(cdt.pickerBackgroundColor);
+            if (monthPanel != null) monthPanel.setBackground(cdt.pickerBackgroundColor);
+            if (yearPanel != null) yearPanel.setBackground(cdt.pickerBackgroundColor);
         }
         if (cdt.pickerForegroundColor != null) {
             picker.setForeground(cdt.pickerForegroundColor);
             if (dayPanel != null) dayPanel.setForeground(cdt.pickerForegroundColor);
-            if (monthPanel != null) dayPanel.setForeground(cdt.pickerForegroundColor);
-            if (yearPanel != null) dayPanel.setForeground(cdt.pickerForegroundColor);
+            if (monthPanel != null) monthPanel.setForeground(cdt.pickerForegroundColor);
+            if (yearPanel != null) yearPanel.setForeground(cdt.pickerForegroundColor);
+            if (dayLabels != null) {
+                for (VLabel dayLabel : dayLabels) {
+                    dayLabel.setForeground(cdt.pickerForegroundColor);
+                }
+            }
         }
         if (cdt.pickerFont != null) {
             picker.setFont(cdt.pickerFont);
             if (dayPanel != null) dayPanel.setFont(cdt.pickerFont);
-            if (monthPanel != null) dayPanel.setFont(cdt.pickerFont);
-            if (yearPanel != null) dayPanel.setFont(cdt.pickerFont);
+            if (monthPanel != null) monthPanel.setFont(cdt.pickerFont);
+            if (yearPanel != null) yearPanel.setFont(cdt.pickerFont);
         }
         cdt.getPainter().update(picker);
         cdt.getPainter().update(body);

@@ -368,7 +368,7 @@ public class CDateTime extends BaseCombo {
 	Color buttonHoverBackgroundColor, buttonHoverBorderColor;
 	Color buttonSelectedBackgroundColor, buttonSelectedBorderColor;
 
-	Color pickerForegroundColor, pickerBackgroundColor;
+	Color pickerForegroundColor, pickerBackgroundColor, pickerBorderColor;
 	Font pickerFont;
 
 	Color pickerActiveDayColor, pickerInactiveDayColor, pickerTodayColor;
@@ -484,8 +484,14 @@ public class CDateTime extends BaseCombo {
 			disposePicker();
 
 			Shell shell = getContentShell();
-			int style = (isSimple() ? SWT.NONE : SWT.BORDER)
-					| SWT.DOUBLE_BUFFERED;
+			if (pickerBorderColor != null) {
+				shell.setBackground(pickerBorderColor);
+				org.eclipse.swt.layout.FillLayout shellLayout = new org.eclipse.swt.layout.FillLayout();
+				shellLayout.marginHeight = 1;
+				shellLayout.marginWidth = 1;
+				shell.setLayout(shellLayout);
+			}
+			int style = SWT.DOUBLE_BUFFERED;
 			VCanvas canvas = new VCanvas(shell, style);
 			pickerPanel = canvas.getPanel();
 			pickerPanel.setWidget(canvas);
@@ -557,6 +563,9 @@ public class CDateTime extends BaseCombo {
 		tb.setLayout(layout);
 		tb.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		tb.setData(CDT.PickerPart, PickerPart.Toolbar);
+		if (pickerBackgroundColor != null) {
+			tb.setBackground(pickerBackgroundColor);
+		}
 
 		okButton = new VButton(tb, SWT.OK | SWT.NO_FOCUS);
 		okButton.setData(CDT.PickerPart, PickerPart.OkButton);
@@ -2367,6 +2376,24 @@ public class CDateTime extends BaseCombo {
 		if (picker != null) {
 			picker.updateColorsAndFont();
 		}
+	}
+
+	/**
+	 * @return the picker border color
+	 * @since 1.5
+	 */
+	public Color getPickerBorderColor() {
+		checkWidget();
+		return pickerBorderColor;
+	}
+
+	/**
+	 * @param pickerBorderColor
+	 * @since 1.5
+	 */
+	public void setPickerBorderColor(Color pickerBorderColor) {
+		checkWidget();
+		this.pickerBorderColor = pickerBorderColor;
 	}
 
 	/**
