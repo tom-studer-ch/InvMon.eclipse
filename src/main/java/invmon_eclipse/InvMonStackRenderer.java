@@ -1,11 +1,14 @@
 /*********************************************************************
-* Copyright (c) 2024 nCubate Software GmbH
+* Copyright (c) 2000, 2015 IBM Corporation and others.
 *
 * This program and the accompanying materials are made
 * available under the terms of the Eclipse Public License 2.0
 * which is available at https://www.eclipse.org/legal/epl-2.0/
 *
 * SPDX-License-Identifier: EPL-2.0
+*
+* Based on: Eclipse 4.29 (2023-09) - org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer
+* Migrated to: Eclipse 4.34 (2025-12)
 **********************************************************************/
 package invmon_eclipse;
 
@@ -18,10 +21,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -78,7 +81,9 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -182,8 +187,7 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 			addItemToSet(itemsToSet, part);
 		} else if (partParent instanceof MPartSashContainer) {
 			MElementContainer<MUIElement> parentParent = partParent.getParent();
-			if (parentParent instanceof MPart) {
-				MPart parentParentMPart = (MPart) parentParent;
+			if (parentParent instanceof MPart parentParentMPart) {
 				addItemToSet(itemsToSet, parentParentMPart);
 			}
 		} else if (part.getCurSharedRef() != null) {
@@ -213,8 +217,9 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 	void subscribeTopicTransientDataChanged(@UIEventTopic(UIEvents.ApplicationElement.TOPIC_TRANSIENTDATA) org.osgi.service.event.Event event) {
 		Object changedElement = event.getProperty(UIEvents.EventTags.ELEMENT);
 
-		if (!(changedElement instanceof MPart))
+		if (!(changedElement instanceof MPart part)) {
 			return;
+		}
 
 		String key;
 		if (UIEvents.isREMOVE(event)) {
@@ -223,10 +228,9 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 			key = ((Entry<String, Object>) event.getProperty(UIEvents.EventTags.NEW_VALUE)).getKey();
 		}
 
-		if (!IPresentationEngine.OVERRIDE_ICON_IMAGE_KEY.equals(key) && !IPresentationEngine.OVERRIDE_TITLE_TOOL_TIP_KEY.equals(key))
+		if (!IPresentationEngine.OVERRIDE_ICON_IMAGE_KEY.equals(key) && !IPresentationEngine.OVERRIDE_TITLE_TOOL_TIP_KEY.equals(key)) {
 			return;
-
-		MPart part = (MPart) changedElement;
+		}
 		List<CTabItem> itemsToSet = getItemsToSet(part);
 		for (CTabItem item : itemsToSet) {
 			if (key.equals(IPresentationEngine.OVERRIDE_ICON_IMAGE_KEY)) {
@@ -254,13 +258,14 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 
 		Object changedObj = event.getProperty(EventTags.ELEMENT);
 
-		if (!(changedObj instanceof MPart))
+		if (!(changedObj instanceof MPart part)) {
 			return;
+		}
 
-		final MPart part = (MPart) changedObj;
 		CTabItem item = findItemForPart(part);
-		if (item == null || item.isDisposed())
+		if (item == null || item.isDisposed()) {
 			return;
+		}
 
 		if (UIEvents.isADD(event)) {
 			if (UIEvents.contains(event, UIEvents.EventTags.NEW_VALUE, IPresentationEngine.ADORNMENT_PIN)) {
@@ -283,10 +288,8 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 	@Optional
 	void subscribeTopicUILabelChanged(@UIEventTopic(UIEvents.UILabel.TOPIC_ALL) Event event) {
 		Object element = event.getProperty(UIEvents.EventTags.ELEMENT);
-		if (!(element instanceof MPart))
+		if (!(element instanceof MPart part))
 			return;
-
-		MPart part = (MPart) element;
 
 		String attName = (String) event.getProperty(UIEvents.EventTags.ATTNAME);
 		Object newValue = event.getProperty(UIEvents.EventTags.NEW_VALUE);
@@ -327,12 +330,9 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		Object objElement = event.getProperty(UIEvents.EventTags.ELEMENT);
 
 		// Ensure that this event is for a MMenuItem
-		if (!(objElement instanceof MPart)) {
+		if (!(objElement instanceof MPart part)) {
 			return;
 		}
-
-		// Extract the data bits
-		MPart part = (MPart) objElement;
 
 		updatePartTab(event, part);
 	}
@@ -353,12 +353,11 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		Object element = event.getProperty(UIEvents.EventTags.ELEMENT);
 
 		MPart part = null;
-		if (element instanceof MPart) {
-			part = (MPart) element;
-		} else if (element instanceof MPlaceholder) {
-			MUIElement ref = ((MPlaceholder) element).getRef();
-			if (ref instanceof MPart) {
-				part = (MPart) ref;
+		if (element instanceof MPart p) {
+			part = p;
+		} else if (element instanceof MPlaceholder ph) {
+			if (ph.getRef() instanceof MPart p) {
+				part = p;
 			}
 		}
 
@@ -460,11 +459,9 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 	void subscribeTopicActivateChanged(@UIEventTopic(UIEvents.UILifeCycle.ACTIVATE) Event event) {
 		// Manages CSS styling based on active part changes
 		MUIElement changed = (MUIElement) event.getProperty(UIEvents.EventTags.ELEMENT);
-		if (!(changed instanceof MPart)) {
+		if (!(changed instanceof MPart newActivePart)) {
 			return;
 		}
-
-		MPart newActivePart = (MPart) changed;
 		MUIElement partParent = newActivePart.getParent();
 		if (partParent == null && newActivePart.getCurSharedRef() != null) {
 			partParent = newActivePart.getCurSharedRef().getParent();
@@ -569,7 +566,7 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 			newName = LegacyActionTools.escapeMnemonics(newName);
 		}
 
-		if (itemPart instanceof MDirtyable && ((MDirtyable) itemPart).isDirty()) {
+		if (itemPart instanceof MDirtyable dirtyable && dirtyable.isDirty()) {
 			newName = '*' + newName;
 		}
 		return newName;
@@ -581,12 +578,8 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 
 	@Override
 	public Object createWidget(MUIElement element, Object parent) {
-		if (!(element instanceof MPartStack) || !(parent instanceof Composite))
+		if (!(element instanceof MPartStack pStack) || !(parent instanceof Composite parentComposite))
 			return null;
-
-		MPartStack pStack = (MPartStack) element;
-
-		Composite parentComposite = (Composite) parent;
 
 		// Ensure that all rendered PartStacks have an Id
 		if (element.getElementId() == null || element.getElementId().length() == 0) {
@@ -621,6 +614,9 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 			// Add a composite to manage the view's TB and Menu
 			addTopRight(tabFolder);
 
+			// ### modification: Add paint listener to draw content area border
+			addContentAreaBorder(tabFolder);
+
 			return tabFolder;
 		} else {
 			
@@ -648,6 +644,33 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 	private void updateMRUValue(CTabFolder tabFolder) {
 		boolean actualMRUValue = getMRUValue();
 		tabFolder.setMRUVisible(actualMRUValue);
+	}
+
+	/**
+	 * ### modification: Adds a paint listener to draw a border around the content area
+	 * (left, bottom, right sides connecting to the tab).
+	 */
+	private void addContentAreaBorder(CTabFolder tabFolder) {
+		tabFolder.addPaintListener(e -> {
+			Rectangle clientArea = tabFolder.getClientArea();
+			Point size = tabFolder.getSize();
+			int tabHeight = tabFolder.getTabHeight();
+			if (size.x <= 0 || size.y <= 0) {
+				return;
+			}
+			GC gc = e.gc;
+			Color borderColor = tabFolder.getDisplay().getSystemColor(SWT.COLOR_GRAY);
+			gc.setForeground(borderColor);
+			// Draw border around content area (below tabs)
+			// The content area starts at y = tabHeight + 1 and extends to the bottom
+			int x1 = 0;
+			int y1 = tabHeight + 1;
+			int x2 = size.x - 1;
+			int y2 = size.y - 1;
+			gc.drawLine(x1, y1, x1, y2);         // left
+			gc.drawLine(x1, y2, x2, y2);         // bottom
+			gc.drawLine(x2, y1, x2, y2);         // right
+		});
 	}
 
 	/**
@@ -773,19 +796,22 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		}
 
 		MPart part = null;
-		if (element instanceof MPart)
-			part = (MPart) element;
-		else if (element instanceof MPlaceholder) {
-			part = (MPart) ((MPlaceholder) element).getRef();
+		if (element instanceof MPart p)
+			part = p;
+		else if (element instanceof MPlaceholder ph) {
+			part = (MPart) ph.getRef();
 			if (part != null) {
-				part.setCurSharedRef((MPlaceholder) element);
+				part.setCurSharedRef(ph);
 			}
 		}
 
 		if (!(stack.getWidget() instanceof CTabFolder)) {
-			Composite standaloneStack = (Composite) stack.getWidget();
-			Control control = (Control) element.getWidget();
-			((StackLayout) standaloneStack.getLayout()).topControl = control;
+			if (stack.getWidget() instanceof Composite standaloneStack) {
+				Control control = (Control) element.getWidget();
+				if (standaloneStack.getLayout() instanceof StackLayout stackLayout) {
+					stackLayout.topControl = control;
+				}
+			}
 			return;
 		}
 
@@ -852,9 +878,8 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 	private CTabItem findItemForPart(MUIElement element, MElementContainer<MUIElement> stack) {
 		if (stack == null)
 			stack = element.getParent();
-		if (!(stack.getWidget() instanceof CTabFolder))
+		if (!(stack.getWidget() instanceof CTabFolder tabFolder))
 			return null;
-		CTabFolder tabFolder = (CTabFolder) stack.getWidget();
 		if (tabFolder == null || tabFolder.isDisposed())
 			return null;
 
@@ -909,11 +934,9 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 	public void hideChild(MElementContainer<MUIElement> parentElement, MUIElement child) {
 		super.hideChild(parentElement, child);
 
-		if (!(parentElement.getWidget() instanceof CTabFolder)) {
+		if (!(parentElement.getWidget() instanceof CTabFolder tabFolder)) {
 			return;
 		}
-
-		CTabFolder tabFolder = (CTabFolder) parentElement.getWidget();
 		if (tabFolder == null)
 			return;
 
@@ -940,14 +963,11 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		if (!(me instanceof MElementContainer<?>))
 			return;
 
-		if (!(me.getWidget() instanceof CTabFolder))
+		if (!(me.getWidget() instanceof CTabFolder tabFolder))
 			return;
 
 		@SuppressWarnings("unchecked")
 		final MElementContainer<MUIElement> stack = (MElementContainer<MUIElement>) me;
-
-		// Match the selected TabItem to its Part
-		final CTabFolder tabFolder = (CTabFolder) me.getWidget();
 
 		// Handle traverse events for accessibility
 		tabFolder.addTraverseListener(e -> {
@@ -970,6 +990,7 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 
 		// Detect activation...picks up cases where the user clicks on the
 		// (already active) tab
+		final CTabFolder tabFolderForListeners = tabFolder;
 		tabFolder.addListener(SWT.Activate, event -> {
 			if (event.detail == SWT.MouseDown) {
 				CTabFolder tabFolder1 = (CTabFolder) event.widget;
@@ -1252,8 +1273,7 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 
 		ignoreTabSelChanges = true;
 		// Ensure that the newly selected control is correctly sized
-		if (tabItem.getControl() instanceof Composite) {
-			Composite ctiComp = (Composite) tabItem.getControl();
+		if (tabItem.getControl() instanceof Composite ctiComp) {
 			// see bug 461573, 528720: call below is still needed to make view
 			// descriptions visible after unhiding the view with changed bounds
 			ctiComp.requestLayout();
@@ -1479,12 +1499,11 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			MUIElement child = children.get(i);
 			MPart otherPart = null;
-			if (child instanceof MPart) {
-				otherPart = (MPart) child;
-			} else if (child instanceof MPlaceholder) {
-				MUIElement otherItem = ((MPlaceholder) child).getRef();
-				if (otherItem instanceof MPart) {
-					otherPart = (MPart) otherItem;
+			if (child instanceof MPart p) {
+				otherPart = p;
+			} else if (child instanceof MPlaceholder ph) {
+				if (ph.getRef() instanceof MPart p) {
+					otherPart = p;
 				}
 			}
 			if (otherPart == part) {
@@ -1515,12 +1534,11 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 				continue;
 
 			MPart otherPart = null;
-			if (child instanceof MPart)
-				otherPart = (MPart) child;
-			else if (child instanceof MPlaceholder) {
-				MUIElement otherItem = ((MPlaceholder) child).getRef();
-				if (otherItem instanceof MPart)
-					otherPart = (MPart) otherItem;
+			if (child instanceof MPart p)
+				otherPart = p;
+			else if (child instanceof MPlaceholder ph) {
+				if (ph.getRef() instanceof MPart p)
+					otherPart = p;
 			}
 			if (otherPart == null)
 				continue;
@@ -1567,8 +1585,8 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		MUIElement selectedElement = container.getSelectedElement();
 		if (others.remove(selectedElement)) {
 			others.add((MPart) selectedElement);
-		} else if (selectedElement instanceof MPlaceholder) {
-			selectedElement = ((MPlaceholder) selectedElement).getRef();
+		} else if (selectedElement instanceof MPlaceholder ph) {
+			selectedElement = ph.getRef();
 			if (others.remove(selectedElement)) {
 				others.add((MPart) selectedElement);
 			}
@@ -1644,8 +1662,8 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 		}
 
 		Object menuRenderer = viewMenu.getRenderer();
-		if (menuRenderer instanceof MenuManagerRenderer) {
-			MenuManager manager = ((MenuManagerRenderer) menuRenderer).getManager(viewMenu);
+		if (menuRenderer instanceof MenuManagerRenderer mmRenderer) {
+			MenuManager manager = mmRenderer.getManager(viewMenu);
 			if (manager != null && manager.isVisible()) {
 				return true;
 			}
@@ -1656,8 +1674,7 @@ public class InvMonStackRenderer extends LazyStackRenderer {
 			Menu menu = (Menu) renderer.createGui(viewMenu, control.getShell(), part.getContext());
 			if (menu != null) {
 				menuRenderer = viewMenu.getRenderer();
-				if (menuRenderer instanceof MenuManagerRenderer) {
-					MenuManagerRenderer menuManagerRenderer = (MenuManagerRenderer) menuRenderer;
+				if (menuRenderer instanceof MenuManagerRenderer menuManagerRenderer) {
 					MenuManager manager = menuManagerRenderer.getManager(viewMenu);
 					if (manager != null) {
 						// remark ourselves as dirty so that the menu will be

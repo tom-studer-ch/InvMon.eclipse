@@ -14,22 +14,22 @@ Export-Package: invmon_eclipse,
  org.eclipse.nebula.widgets.cdatetime,
  org.eclipse.nebula.widgets.formattedtext,
  org.eclipse.nebula.widgets.tablecombo
-Import-Package: javax.annotation;version="1.3.5"
+Import-Package: jakarta.annotation
 Automatic-Module-Name: InvMon.eclipse
-Bundle-RequiredExecutionEnvironment: JavaSE-19
-Require-Bundle: org.eclipse.e4.ui.workbench.renderers.swt,
- org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.ui.workbench,
- org.eclipse.jface,
- org.eclipse.e4.core.di.annotations,
- org.eclipse.e4.ui.di,
- javax.inject,
- org.eclipse.e4.core.contexts,
- org.eclipse.e4.core.di.extensions,
- org.eclipse.e4.core.services,
- org.eclipse.e4.ui.css.swt,
- org.eclipse.e4.ui.workbench.swt,
- org.eclipse.core.runtime;bundle-version="3.29.0",
- org.osgi.service.event,
- org.eclipse.e4.ui.css.core,
- org.eclipse.equinox.launcher;bundle-version="1.6.500"
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Require-Bundle: org.eclipse.e4.ui.workbench.renderers.swt;bundle-version="0.0.0",
+ org.eclipse.e4.ui.model.workbench;bundle-version="0.0.0",
+ org.eclipse.e4.ui.workbench;bundle-version="0.0.0",
+ org.eclipse.jface;bundle-version="0.0.0",
+ org.eclipse.e4.core.di.annotations;bundle-version="0.0.0",
+ org.eclipse.e4.ui.di;bundle-version="0.0.0",
+ jakarta.inject.jakarta.inject-api;bundle-version="0.0.0",
+ org.eclipse.e4.core.contexts;bundle-version="0.0.0",
+ org.eclipse.e4.core.di.extensions;bundle-version="0.0.0",
+ org.eclipse.e4.core.services;bundle-version="0.0.0",
+ org.eclipse.e4.ui.css.swt;bundle-version="0.0.0",
+ org.eclipse.e4.ui.workbench.swt;bundle-version="0.0.0",
+ org.eclipse.core.runtime;bundle-version="0.0.0",
+ org.osgi.service.event;bundle-version="0.0.0",
+ org.eclipse.e4.ui.css.core;bundle-version="0.0.0",
+ org.eclipse.equinox.launcher;bundle-version="0.0.0"

@@ -1,11 +1,14 @@
 /*********************************************************************
-* Copyright (c) 2024 nCubate Software GmbH
+* Copyright (c) 2000, 2015 IBM Corporation and others.
 *
 * This program and the accompanying materials are made
 * available under the terms of the Eclipse Public License 2.0
 * which is available at https://www.eclipse.org/legal/epl-2.0/
 *
 * SPDX-License-Identifier: EPL-2.0
+*
+* Based on: Eclipse 4.29 (2023-09) - org.eclipse.e4.ui.internal.workbench.renderers.swt.BasicPartList
+* Migrated to: Eclipse 4.34 (2025-12)
 **********************************************************************/
 package invmon_eclipse;
 
@@ -54,8 +57,7 @@ public class InvMonBasicPartList extends AbstractTableInformationControl {
 
 		@Override
 		public Font getFont(Object element) {
-			if (element instanceof MPart) {
-				MPart part = (MPart) element;
+			if (element instanceof MPart part) {
 				CTabItem item = renderer.findItemForPart(part);
 				if (item != null && !item.isShowing()) {
 					return boldFont;
@@ -66,8 +68,7 @@ public class InvMonBasicPartList extends AbstractTableInformationControl {
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof MDirtyable
-					&& ((MDirtyable) element).isDirty()) {
+			if (element instanceof MDirtyable dirtyable && dirtyable.isDirty()) {
 				return "*" + ((MUILabel) element).getLocalizedLabel(); //$NON-NLS-1$
 			}
 			return ((MUILabel) element).getLocalizedLabel();
@@ -114,8 +115,7 @@ public class InvMonBasicPartList extends AbstractTableInformationControl {
 			getTableViewer().setComparator(new ViewerComparator() {
 				@Override
 				public int category(Object element) {
-					if (element instanceof MPart) {
-						MPart part = (MPart) element;
+					if (element instanceof MPart part) {
 						CTabItem item = InvMonBasicPartList.this.renderer.findItemForPart(part);
 						if (item != null && !item.isShowing()) {
 							return -1;
@@ -144,16 +144,15 @@ public class InvMonBasicPartList extends AbstractTableInformationControl {
 	private List<Object> getInput() {
 		List<Object> list = new ArrayList<>();
 		for (MUIElement element : input.getChildren()) {
-			if (element instanceof MPlaceholder) {
+			if (element instanceof MPlaceholder ph) {
 				if (!element.isToBeRendered() || !element.isVisible()) {
 					continue;
 				}
 
-				element = ((MPlaceholder) element).getRef();
+				element = ph.getRef();
 			}
 
-			if (element.isToBeRendered() && element.isVisible()
-					&& element instanceof MPart) {
+			if (element.isToBeRendered() && element.isVisible() && element instanceof MPart) {
 				list.add(element);
 			}
 		}
@@ -172,8 +171,8 @@ public class InvMonBasicPartList extends AbstractTableInformationControl {
 		// close the shell
 		dispose();
 
-		if (selectedElement instanceof MPart) {
-			partService.activate((MPart) selectedElement);
+		if (selectedElement instanceof MPart part) {
+			partService.activate(part);
 		}
 	}
 
@@ -182,8 +181,7 @@ public class InvMonBasicPartList extends AbstractTableInformationControl {
 		if (selectedElement == null) {
 			selectedElement = getSelectedElement();
 		}
-		if (selectedElement instanceof MPart) {
-			MPart part = (MPart) selectedElement;
+		if (selectedElement instanceof MPart part) {
 			if (partService.savePart(part, true)) {
 				partService.hidePart(part);
 			}
