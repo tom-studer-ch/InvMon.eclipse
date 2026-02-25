@@ -62,7 +62,7 @@ public class Main {
 		
 		// Assemble args array
 		
-		String splashBaseName = MAC ? "../../img/splash/splash" : "img/splash/splash";
+		String splashBaseName = MAC ? "../Resources/img/splash/splash" : "img/splash/splash";
 		String splashScreen = splashBaseName + ".png";
 		String initialSplashScreen = splashBaseName + "-initial.png";
 		if (new File(initialSplashScreen).exists()) splashScreen = initialSplashScreen;
