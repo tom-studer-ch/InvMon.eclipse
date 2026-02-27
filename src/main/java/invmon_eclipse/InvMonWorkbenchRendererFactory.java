@@ -23,28 +23,28 @@ import org.eclipse.e4.ui.workbench.renderers.swt.WorkbenchRendererFactory;
 public class InvMonWorkbenchRendererFactory extends WorkbenchRendererFactory {
 
 	private SashRenderer sashRenderer;
-	
-	// private InvMonStackRenderer stackRenderer;
-	
-	
+
+	private InvMonStackRenderer stackRenderer;
+
+
 	@Override
 	public AbstractPartRenderer getRenderer(MUIElement uiElement, Object parent) {
-		
+
 		if (uiElement instanceof MPartSashContainer) {
 			if (sashRenderer == null) {
 				sashRenderer = new InvMonSashRenderer();
 				initRenderer(sashRenderer);
 			}
 			return sashRenderer;
-//		} else if (uiElement instanceof MPartStack) {
-//			if (stackRenderer == null) {
-//				stackRenderer = new InvMonStackRenderer();
-//				initRenderer(stackRenderer);
-//			}
-//			return stackRenderer;
+		} else if (uiElement instanceof MPartStack) {
+			if (stackRenderer == null) {
+				stackRenderer = new InvMonStackRenderer();
+				initRenderer(stackRenderer);
+			}
+			return stackRenderer;
 		} else {
 			return super.getRenderer(uiElement, parent);
 		}
 	}
-	
+
 }
