@@ -272,18 +272,12 @@ class AnalogTimePicker extends VPanel {
 			tmpcal.set(field, v);
 			setSelection(tmpcal.getTime());
 		} else if (setM) {
-			int v = (int) (val + 0.5);
-			if (v > 59) {
-				v = 59;
-			}
-			tmpcal.set(Calendar.MINUTE, v);
+			tmpcal.add(Calendar.MINUTE,
+					rotation((int) (val + 0.5), tmpcal.get(Calendar.MINUTE)));
 			setSelection(tmpcal.getTime());
 		} else if (setS) {
-			int v = (int) (val + 0.5);
-			if (v > 59) {
-				v = 59;
-			}
-			tmpcal.set(Calendar.SECOND, v);
+			tmpcal.add(Calendar.SECOND,
+					rotation((int) (val + 0.5), tmpcal.get(Calendar.SECOND)));
 			setSelection(tmpcal.getTime());
 		} else {
 			boolean rd = false;
@@ -315,6 +309,34 @@ class AnalogTimePicker extends VPanel {
 				dialPanel.redraw();
 			}
 		}
+	}
+
+	/**
+	 * Convert an absolute position on the dial into the number of units the
+	 * hand was rotated by, so that dragging a hand past twelve o'clock carries
+	 * into the next larger field instead of just wrapping around - the way the
+	 * hands of a real watch behave.
+	 * <p>
+	 * The hand is assumed to have taken the shorter way round, which holds for
+	 * the small steps of a drag; only a deliberate flick of more than half the
+	 * dial in a single mouse move would be read as a turn in the other
+	 * direction.
+	 * </p>
+	 *
+	 * @param position
+	 *            the position the hand was dragged to, 0 to 60
+	 * @param current
+	 *            the current value of the field the hand shows, 0 to 59
+	 * @return the signed number of units rotated, -30 to 30
+	 */
+	private static int rotation(int position, int current) {
+		int diff = (position % 60) - current;
+		if (diff > 30) {
+			diff -= 60; // dragged backwards past twelve o'clock
+		} else if (diff < -30) {
+			diff += 60; // dragged forwards past twelve o'clock
+		}
+		return diff;
 	}
 
 	private void handleMouseUp() {

@@ -15,9 +15,6 @@
 
 package org.eclipse.nebula.cwt.base;
 
-import org.eclipse.nebula.cwt.animation.AnimationRunner;
-import org.eclipse.nebula.cwt.animation.effects.Resize;
-import org.eclipse.nebula.cwt.animation.movement.LinearInOut;
 import org.eclipse.nebula.cwt.v.VButton;
 import org.eclipse.nebula.cwt.v.VButtonPainter;
 import org.eclipse.nebula.cwt.v.VControl;
@@ -172,7 +169,15 @@ public abstract class BaseCombo extends Canvas {
 	 * boolean to disable button on open state.
 	 */
 	boolean buttonActive = true;
-	
+
+	/**
+	 * Set when the popup was dismissed by a click on the drop-down button
+	 * itself. That click arrives as a Deactivate on the popup shell first and
+	 * as the button's own Selection afterwards - without this flag the
+	 * Selection would immediately reopen the popup the click just closed.
+	 */
+	private boolean closedByButtonClick = false;
+
 	private static int checkStyle(int style) {
 		int rstyle = SWT.NONE;
 		if ((style & SWT.BORDER) != 0) {
@@ -482,7 +487,11 @@ public abstract class BaseCombo extends Canvas {
 		}
 		button.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				if(buttonActive) {
+				if (closedByButtonClick) {
+					// this click already closed the popup by deactivating it,
+					// so it must read as "close" and not toggle back open
+					closedByButtonClick = false;
+				} else if (buttonActive) {
 					setOpen(!isOpen());
 				}
 			}
@@ -664,6 +673,10 @@ public abstract class BaseCombo extends Canvas {
 					case SWT.Deactivate:
 						if (!checkContent() || content.getMenu() == null
 								|| !content.getMenu().isVisible()) {
+							// Remember whether this deactivation comes from a
+							// click on the drop-down button - assigned, not just
+							// set, so any other deactivation clears it again.
+							closedByButtonClick = isCursorOverButton();
 							setOpen(false);
 						}
 						break;
@@ -679,6 +692,17 @@ public abstract class BaseCombo extends Canvas {
 		}
 
 		addListener(SWT.Dispose, disposeListener);
+	}
+
+	/**
+	 * @return true if the mouse pointer is currently over the drop-down button
+	 */
+	private boolean isCursorOverButton() {
+		if (!checkButton() || !button.getVisible()) {
+			return false;
+		}
+		return button.getBounds()
+				.contains(toControl(getDisplay().getCursorLocation()));
 	}
 
 	/**
@@ -1214,32 +1238,33 @@ public abstract class BaseCombo extends Canvas {
 				// aStyle |= Animator.UP;
 				// }
 
-				Point start = contentShell.getSize();
-				Point end = new Point(start.x, 0);
-				Runnable runnable = new Runnable() {
-					public void run() {
-						postClose(contentShell);
-						buttonActive = true;
-						
-						if (callback != null) {
-							callback.run();
-						}
-					}
-				};
-
-				AnimationRunner runner = new AnimationRunner();
-				runner.runEffect(new Resize(contentShell, start, end, 200,
-						new LinearInOut(), runnable, runnable));
+				// collapse the popup immediately - the original implementation
+				// animated the height down to zero over 200ms
+				contentShell.setSize(contentShell.getSize().x, 0);
 
 				if (checkText()) {
 					text.setFocus();
+				}
+
+				postClose(contentShell);
+				buttonActive = true;
+
+				if (callback != null) {
+					callback.run();
 				}
 			}
 		} else {
 			this.open = true;
 
 			Point size = content.computeSize(-1, -1);
-			content.setSize(size);
+			// Only size the content by hand if the popup shell has no layout of
+			// its own. If it has one (CDateTime installs a FillLayout when a
+			// picker border color is set), sizing the shell further down lays
+			// the content out anyway - doing it here as well costs a full
+			// duplicate layout pass of the content.
+			if (contentShell.getLayout() == null) {
+				content.setSize(size);
+			}
 			Point location = positionControl.getComposite().toDisplay(
 					positionControl.getLocation());
 			location.y += (positionControl.getSize().y + 2);
@@ -1277,29 +1302,22 @@ public abstract class BaseCombo extends Canvas {
 				location.y += 8;
 			}
 
-			contentShell.setBounds(location.x, location.y, size.x, 0);
+			// show the popup at its full size immediately - the original
+			// implementation animated the height from zero over 200ms
+			contentShell.setBounds(location.x, location.y, size.x, size.y);
 
 			// chance for subclasses to do something before the shell becomes
 			// visible
 			preOpen(contentShell);
 
-			Point start = new Point(size.x, 0);
-			Point end = new Point(size.x, size.y);
-			Runnable runnable = new Runnable() {
-				public void run() {
-					setContentFocus();
-					postOpen(contentShell);
-					if (callback != null) {
-						callback.run();
-					}
-				}
-			};
-
 			contentShell.setVisible(true);
-			AnimationRunner runner = new AnimationRunner();
-			runner.runEffect(new Resize(contentShell, start, end, 200,
-					new LinearInOut(), runnable, runnable));
 			contentShell.setRedraw(true);
+
+			setContentFocus();
+			postOpen(contentShell);
+			if (callback != null) {
+				callback.run();
+			}
 		}
 		if (BUTTON_AUTO == buttonVisibility) {
 			setButtonVisible(!open);

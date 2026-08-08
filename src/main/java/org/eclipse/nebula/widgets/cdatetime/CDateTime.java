@@ -626,11 +626,18 @@ public class CDateTime extends BaseCombo {
 				setContent(null);
 				c.dispose();
 				if (contentShell != null) {
+					// The shell cannot be disposed right here - we may be inside
+					// its own Deactivate event - so the dispose is deferred.
+					// Hand the deferred call its own reference and drop the
+					// field now: if the picker is reopened before the dispose
+					// runs, it must build itself a fresh shell rather than reuse
+					// this doomed one, otherwise the deferred dispose tears down
+					// the newly opened picker and leaves isOpen() stuck at true.
+					final Shell doomed = contentShell;
+					contentShell = null;
 					Display.getDefault().asyncExec(() -> {
-						if (contentShell != null
-								&& !contentShell.isDisposed()) {
-							contentShell.dispose();
-							contentShell = null;
+						if (!doomed.isDisposed()) {
+							doomed.dispose();
 						}
 					});
 				}

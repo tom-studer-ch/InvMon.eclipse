@@ -317,6 +317,15 @@ class DatePicker extends VPanel {
                     dayPanel.getMenu().setVisible(true);
                 }
                 break;
+            case SWT.MouseDoubleClick:
+                // The first click of the double click has already applied the
+                // selection via SWT.Selection, so just accept it and close the
+                // picker - the same thing pressing Enter on a day does.
+                if (event.button == 1 && event.data instanceof VButton
+                        && ((VButton) event.data).getEnabled()) {
+                    cdt.fireSelectionChanged(true);
+                }
+                break;
             case SWT.MouseWheel:
                 scrollCalendar(event.count > 0 ? SWT.ARROW_UP : SWT.ARROW_DOWN);
                 break;
@@ -381,6 +390,7 @@ class DatePicker extends VPanel {
                     new GridData(SWT.FILL, SWT.FILL, true, true));
             dayButtons[day].addListener(SWT.KeyDown, dayListener);
             dayButtons[day].addListener(SWT.MouseDown, dayListener);
+            dayButtons[day].addListener(SWT.MouseDoubleClick, dayListener);
             dayButtons[day].addListener(SWT.MouseWheel, dayListener);
             dayButtons[day].addListener(SWT.Selection, dayListener);
             dayButtons[day].addListener(SWT.Traverse, dayListener);
